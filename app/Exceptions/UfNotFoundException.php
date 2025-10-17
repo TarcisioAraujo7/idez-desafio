@@ -6,8 +6,9 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\Debug\ShouldntReport;
 
-class UfNotFoundException extends Exception
+class UfNotFoundException extends Exception implements ShouldntReport
 {
     public function __construct(string $message = 'Unidade federativa não encontrada no provedor.')
     {
