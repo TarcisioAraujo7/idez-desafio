@@ -1,7 +1,6 @@
 <?php
 
+use App\Http\Controllers\MunicipalityController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/municipalities/{uf}', [MunicipalityController::class, 'index'])->name('municipalities.index');
