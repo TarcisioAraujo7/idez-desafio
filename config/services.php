@@ -14,6 +14,8 @@ return [
     |
     */
 
+    'municipality_provider' => env('MUNICIPALITY_PROVIDER', 'ibge'),
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
