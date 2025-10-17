@@ -2,10 +2,11 @@
 
 namespace Tests\Unit\Providers;
 
-use App\Http\Providers\BrasilApiProvider;
+use Tests\TestCase;
 use App\Http\Providers\IbgeProvider;
 use Illuminate\Support\Facades\Http;
-use Tests\TestCase;
+use App\Exceptions\UfNotFoundException;
+use App\Http\Providers\BrasilApiProvider;
 
 class BrasilApiProviderTest extends TestCase
 {
@@ -26,4 +27,17 @@ class BrasilApiProviderTest extends TestCase
         $this->assertEquals(280001, $result[0]['ibge_code']);
     }
 
+    public function testBrasilApiProviderThrowsUfNotFoundExceptionOn404(): void
+    {
+        Http::fake([
+            'https://brasilapi.com.br/api/ibge/municipios/v1/*' => Http::response([], 404),
+        ]);
+
+        $provider = new BrasilApiProvider();
+
+        $this->expectException(UfNotFoundException::class);
+        $this->expectExceptionMessage("UF 'XX' não encontrada em Brasil API.");
+
+        $provider->indexMunicipalities('XX');
+    }
 }
