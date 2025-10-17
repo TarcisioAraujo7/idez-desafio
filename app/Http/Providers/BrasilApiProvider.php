@@ -4,6 +4,7 @@ namespace App\Http\Providers;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use App\Exceptions\UfNotFoundException;
 
 class BrasilApiProvider implements Provider
 {
@@ -11,7 +12,13 @@ class BrasilApiProvider implements Provider
     {
         $url = $this->generateUrl($uf);
 
-        $response = Http::timeout(5)->get($url)->throw();
+        $response = Http::timeout(5)->get($url);
+
+        if ($response->status() === 404) {
+            throw new UfNotFoundException("UF '{$uf}' não encontrada em Brasil API.");
+        }
+
+        $response->throw();
 
         return collect($response->json())->map(fn ($item) => [
             'name' => $item['nome'],
