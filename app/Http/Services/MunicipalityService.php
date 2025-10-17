@@ -20,7 +20,9 @@ class MunicipalityService
 
     public function __construct()
     {
-        $configuredProvider = strtolower(trim(config('services.municipality_provider', 'ibge')));
+        /** @var string $config */
+        $config = config('services.municipality_provider', 'ibge');
+        $configuredProvider = strtolower(trim($config));
 
         switch ($configuredProvider) {
             case 'brasilapi':
@@ -35,11 +37,21 @@ class MunicipalityService
         $this->providerClassBaseName = class_basename($this->provider);
     }
 
+    /**
+     * Retorna os municípios da UF informada, buscando do cache ou do provedor configurado.
+     *
+     * @param  string  $uf  Sigla da unidade federativa (ex: "SE")
+     * @return array{data: Collection<int, array{name: string, ibge_code: int}>, provider: string}|null
+     *
+     * @throws UfNotFoundException Quando a UF não é encontrada no provedor.
+     * @throws ProviderTemporarilyUnavailableException Quando o provedor está temporariamente indisponível.
+     */
     public function index(string $uf): ?array
     {
         $cacheKey = sprintf('municipalities_%s_%s', get_class($this->provider), strtoupper($uf));
 
         try {
+            /** @var Collection<int, array{name: string, ibge_code: int}> $data */
             $data = Cache::remember($cacheKey, now()->addHours(6), function () use ($uf): Collection {
                 return $this->provider->indexMunicipalities($uf);
             });
