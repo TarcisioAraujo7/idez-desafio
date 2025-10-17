@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Http;
+use Tests\TestCase;
 
 class MunicipalityTest extends TestCase
 {
-    public function testMunicipalitiesCanBeListedByUf(): void
+    public function test_municipalities_can_be_listed_by_uf(): void
     {
         $municipalitiesArray = [
             ['id' => 280001, 'nome' => 'Aracaju'],
@@ -37,8 +37,8 @@ class MunicipalityTest extends TestCase
             ],
         ]);
     }
-    
-    public function testNotFoundResponseShouldBeReturnedWhenInvalidUfIsPassed(): void
+
+    public function test_not_found_response_should_be_returned_when_invalid_uf_is_passed(): void
     {
         Config::set('services.municipality_provider', 'brasil-api');
 
@@ -55,8 +55,8 @@ class MunicipalityTest extends TestCase
 
         $response->assertJson(['message' => "UF 'XX' não encontrada em Brasil API."]);
     }
-    
-    public function testServiceUnavailableResponseShouldBeReturnedWhenProviderFails(): void
+
+    public function test_service_unavailable_response_should_be_returned_when_provider_fails(): void
     {
         Config::set('services.municipality_provider', 'brasil-api');
 

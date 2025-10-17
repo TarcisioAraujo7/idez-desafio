@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Providers;
 
-use Tests\TestCase;
+use App\Exceptions\UfNotFoundException;
 use App\Http\Providers\IbgeProvider;
 use Illuminate\Support\Facades\Http;
-use App\Exceptions\UfNotFoundException;
+use Tests\TestCase;
 
 class IbgeProviderTest extends TestCase
 {
-    public function testIbgeProviderReturnsMunicipalitiesFromIbgeApi(): void
+    public function test_ibge_provider_returns_municipalities_from_ibge_api(): void
     {
         Http::fake([
             'https://servicodados.ibge.gov.br/*' => Http::response([
@@ -18,7 +18,7 @@ class IbgeProviderTest extends TestCase
             ], 200),
         ]);
 
-        $provider = new IbgeProvider();
+        $provider = new IbgeProvider;
         $result = $provider->indexMunicipalities('SE');
 
         $this->assertCount(2, $result);
@@ -26,13 +26,13 @@ class IbgeProviderTest extends TestCase
         $this->assertEquals(280001, $result[0]['ibge_code']);
     }
 
-    public function testIbgeProviderThrowsUfNotFoundExceptionOnEmptyResponse(): void
+    public function test_ibge_provider_throws_uf_not_found_exception_on_empty_response(): void
     {
         Http::fake([
             'https://servicodados.ibge.gov.br/*' => Http::response([], 200),
         ]);
 
-        $provider = new IbgeProvider();
+        $provider = new IbgeProvider;
 
         $this->expectException(UfNotFoundException::class);
         $this->expectExceptionMessage("UF 'XX' não encontrada na API do IBGE.");

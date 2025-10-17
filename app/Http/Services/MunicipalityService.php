@@ -2,22 +2,24 @@
 
 namespace App\Http\Services;
 
-use Throwable;
-use App\Http\Providers\Provider;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
-use App\Http\Providers\IbgeProvider;
-use Illuminate\Support\Facades\Cache;
+use App\Exceptions\ProviderTemporarilyUnavailableException;
 use App\Exceptions\UfNotFoundException;
 use App\Http\Providers\BrasilApiProvider;
-use App\Exceptions\ProviderTemporarilyUnavailableException;
+use App\Http\Providers\IbgeProvider;
+use App\Http\Providers\Provider;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class MunicipalityService
 {
     private Provider $provider;
+
     private string $providerClassBaseName;
 
-    public function __construct() {
+    public function __construct()
+    {
         $configuredProvider = strtolower(trim(config('services.municipality_provider', 'ibge')));
 
         switch ($configuredProvider) {
@@ -47,11 +49,11 @@ class MunicipalityService
                 'provider' => $this->providerClassBaseName,
             ];
         } catch (UfNotFoundException $e) {
-            throw $e; 
+            throw $e;
         } catch (Throwable $e) {
             Log::error('Erro no provedor de municípios', [
                 'uf' => $uf,
-                'provider' =>  $this->providerClassBaseName,
+                'provider' => $this->providerClassBaseName,
                 'exception' => $e->getMessage(),
             ]);
 

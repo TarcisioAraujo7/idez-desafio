@@ -27,8 +27,8 @@ class IbgeProvider implements Provider
     public function generateUrl(string $uf): string
     {
         return sprintf(
-                'https://servicodados.ibge.gov.br/api/v1/localidades/estados/%s/municipios',
-                trim(strtolower($uf))
-            );
+            'https://servicodados.ibge.gov.br/api/v1/localidades/estados/%s/municipios',
+            trim(strtolower($uf))
+        );
     }
 }

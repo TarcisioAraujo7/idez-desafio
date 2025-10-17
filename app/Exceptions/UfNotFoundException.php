@@ -3,10 +3,10 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Contracts\Debug\ShouldntReport;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\Debug\ShouldntReport;
 
 class UfNotFoundException extends Exception implements ShouldntReport
 {
