@@ -1,0 +1,7 @@
+
+parameters:
+    tmpDir: tmp/
+    paths:
+        - app/        
+    level: 10
+
