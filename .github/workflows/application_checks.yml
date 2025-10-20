@@ -33,6 +33,13 @@ jobs:
       - name: Generate Laravel key
         run: docker compose exec app php artisan key:generate
 
+      - name: Wait for MySQL to be ready
+        run: |
+          until docker compose exec db mysqladmin ping -h "db" --silent; do
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+
       - name: Run migrations
         run: docker compose exec app php artisan migrate --force
 
