@@ -1,0 +1,9 @@
+{
+    "preset": "psr12",
+    "exclude": [
+        "bootstrap/cache",
+        "resources",
+        "storage",
+        "tmp"
+    ]
+}
