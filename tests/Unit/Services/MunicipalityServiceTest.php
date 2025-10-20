@@ -93,4 +93,41 @@ class MunicipalityServiceTest extends TestCase
 
         $service->index('SE');
     }
+
+    public function test_municipality_service_should_return_paginated_response_if_page_and_per_page_are_provided(): void
+    {
+        $municipalitiesCollection = collect([
+            ['name' => 'Ribeirópolis', 'ibge_code' => 2806008],
+            ['name' => 'Aracaju', 'ibge_code' => 280001],
+            ['name' => 'São Cristóvão', 'ibge_code' => 2806701],
+        ]);
+
+        Cache::shouldReceive('remember')
+            ->once()
+            ->andReturn($municipalitiesCollection);
+
+        $expectedData = collect([
+            ['name' => 'São Cristóvão', 'ibge_code' => 2806701],
+        ]);
+        $expectedResponse = [
+            'data' => $expectedData,
+            'meta' => [
+                'total' => 3,
+                'per_page' => 2,
+                'current_page' => 2,
+                'last_page' => 2,
+                'paginated' => true,
+            ],
+            'provider' => 'IbgeProvider',
+        ];
+
+        $service = new MunicipalityService;
+
+        $page = 2;
+        $perPage = 2;
+
+        $response = $service->index('SE', $page, $perPage);
+
+        $this->assertEquals($expectedResponse, $response);
+    }
 }
