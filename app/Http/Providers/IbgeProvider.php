@@ -21,7 +21,7 @@ class IbgeProvider implements Provider
     {
         $url = $this->generateUrl($uf);
 
-        $response = Http::timeout(5)->retry(3, 100)->get($url)->throw();
+        $response = Http::timeout(5)->get($url)->throw();
 
         if (empty($response->json())) {
             throw new UfNotFoundException("UF '{$uf}' não encontrada na API do IBGE.");

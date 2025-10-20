@@ -21,7 +21,7 @@ class BrasilApiProvider implements Provider
     {
         $url = $this->generateUrl($uf);
 
-        $response = Http::timeout(5)->retry(3, 100)->get($url);
+        $response = Http::timeout(5)->get($url);
 
         if ($response->status() === 404) {
             throw new UfNotFoundException("UF '{$uf}' não encontrada em Brasil API.");
