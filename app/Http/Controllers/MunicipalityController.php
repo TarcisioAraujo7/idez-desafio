@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Services\MunicipalityService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class MunicipalityController extends Controller
 {
@@ -15,7 +15,11 @@ class MunicipalityController extends Controller
         $page = $request->query('page');
         $perPage = $request->query('per_page');
 
+        $page = is_numeric($page) ? (int) $page : null;
+        $perPage = is_numeric($perPage) ? (int) $perPage : null;
+
         $result = $this->service->index($uf, $page, $perPage);
+
         return response()->json(
             data: $result
         );

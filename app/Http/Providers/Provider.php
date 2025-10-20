@@ -2,8 +2,8 @@
 
 namespace App\Http\Providers;
 
-use Illuminate\Support\Collection;
 use App\Exceptions\UfNotFoundException;
+use Illuminate\Support\Collection;
 
 interface Provider
 {

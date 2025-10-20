@@ -25,7 +25,7 @@ class MunicipalityServiceTest extends TestCase
             'data' => $municipalitiesCollection,
             'meta' => [
                 'total' => $municipalitiesCollection->count(),
-                'paginated' => false
+                'paginated' => false,
             ],
             'provider' => 'IbgeProvider',
         ];
@@ -56,7 +56,7 @@ class MunicipalityServiceTest extends TestCase
             'data' => $municipalitiesCollection,
             'meta' => [
                 'total' => $municipalitiesCollection->count(),
-                'paginated' => false
+                'paginated' => false,
             ],
             'provider' => get_class($mockProvider),
         ];

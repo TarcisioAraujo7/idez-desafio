@@ -43,12 +43,11 @@ class MunicipalityService
      *
      * É possível informar parâmetros opcionais de paginação (`page` e `perPage`);
      * se omitidos, o método retornará todos os municípios da UF sem paginação.
-     * 
-     * @param  string $uf  Sigla da unidade federativa (ex: "SE")
+     *
+     * @param  string  $uf  Sigla da unidade federativa (ex: "SE")
      * @param  int|null  $page  Número da página desejada. Se não informado, não aplica paginação.
      * @param  int|null  $perPage  Quantidade de registros por página. Se não informado, retorna todos os registros.
-     * 
-     * @return array{data: Collection<int, array{name: string, meta: array<string, mixed>, ibge_code: int}>, provider: string}|null
+     * @return array{data: Collection<int, array{name: string, ibge_code: int}>, meta: array<string, mixed>, provider: string}|null
      *
      * @throws UfNotFoundException Quando a UF não é encontrada no provedor.
      * @throws ProviderTemporarilyUnavailableException Quando o provedor está temporariamente indisponível.
