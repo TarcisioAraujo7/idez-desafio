@@ -18,7 +18,7 @@ class BrasilApiProviderTest extends TestCase
             ], 200),
         ]);
 
-        $provider = new BrasilApiProvider;
+        $provider = new BrasilApiProvider();
         $result = $provider->indexMunicipalities('SE');
 
         $this->assertCount(2, $result);
@@ -32,7 +32,7 @@ class BrasilApiProviderTest extends TestCase
             'https://brasilapi.com.br/api/ibge/municipios/v1/*' => Http::response([], 404),
         ]);
 
-        $provider = new BrasilApiProvider;
+        $provider = new BrasilApiProvider();
 
         $this->expectException(UfNotFoundException::class);
         $this->expectExceptionMessage("UF 'XX' não encontrada em Brasil API.");

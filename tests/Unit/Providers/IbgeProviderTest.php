@@ -18,7 +18,7 @@ class IbgeProviderTest extends TestCase
             ], 200),
         ]);
 
-        $provider = new IbgeProvider;
+        $provider = new IbgeProvider();
         $result = $provider->indexMunicipalities('SE');
 
         $this->assertCount(2, $result);
@@ -32,7 +32,7 @@ class IbgeProviderTest extends TestCase
             'https://servicodados.ibge.gov.br/*' => Http::response([], 200),
         ]);
 
-        $provider = new IbgeProvider;
+        $provider = new IbgeProvider();
 
         $this->expectException(UfNotFoundException::class);
         $this->expectExceptionMessage("UF 'XX' não encontrada na API do IBGE.");

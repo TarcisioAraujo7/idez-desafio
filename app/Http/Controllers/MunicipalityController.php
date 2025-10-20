@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 
 class MunicipalityController extends Controller
 {
-    public function __construct(private MunicipalityService $service) {}
+    public function __construct(private MunicipalityService $service)
+    {
+    }
 
     public function index(Request $request, string $uf): ?JsonResponse
     {

@@ -30,7 +30,7 @@ class MunicipalityServiceTest extends TestCase
             'provider' => 'IbgeProvider',
         ];
 
-        $service = new MunicipalityService;
+        $service = new MunicipalityService();
 
         $response = $service->index('SE');
 
@@ -62,7 +62,7 @@ class MunicipalityServiceTest extends TestCase
         ];
         $cacheKey = sprintf('municipalities_%s_SE', get_class($mockProvider));
 
-        $service = new MunicipalityService;
+        $service = new MunicipalityService();
 
         $response = $service->index('SE');
 
@@ -78,7 +78,7 @@ class MunicipalityServiceTest extends TestCase
             'https://brasilapi.com.br/api/ibge/municipios/v1/*' => Http::response([], 404),
         ]);
 
-        $service = new MunicipalityService;
+        $service = new MunicipalityService();
 
         $this->expectException(UfNotFoundException::class);
         $this->expectExceptionMessage("UF 'XX' não encontrada em Brasil API.");
@@ -94,7 +94,7 @@ class MunicipalityServiceTest extends TestCase
             'https://brasilapi.com.br/api/ibge/municipios/v1/*' => Http::response([], 500),
         ]);
 
-        $service = new MunicipalityService;
+        $service = new MunicipalityService();
 
         $this->expectException(ProviderTemporarilyUnavailableException::class);
         $this->expectExceptionMessage("O provedor 'BrasilApiProvider' não está disponível no momento, tente novamente mais tarde.");
@@ -129,7 +129,7 @@ class MunicipalityServiceTest extends TestCase
             'provider' => 'IbgeProvider',
         ];
 
-        $service = new MunicipalityService;
+        $service = new MunicipalityService();
 
         $page = 2;
         $perPage = 2;
