@@ -26,6 +26,7 @@ class MunicipalityService
 
         switch ($configuredProvider) {
             case 'brasilapi':
+            case 'brasil_api':
             case 'brasil-api':
                 $this->provider = app(BrasilApiProvider::class);
                 break;
@@ -40,24 +41,53 @@ class MunicipalityService
     /**
      * Retorna os municípios da UF informada, buscando do cache ou do provedor configurado.
      *
-     * @param  string  $uf  Sigla da unidade federativa (ex: "SE")
-     * @return array{data: Collection<int, array{name: string, ibge_code: int}>, provider: string}|null
+     * É possível informar parâmetros opcionais de paginação (`page` e `perPage`);
+     * se omitidos, o método retornará todos os municípios da UF sem paginação.
+     * 
+     * @param  string $uf  Sigla da unidade federativa (ex: "SE")
+     * @param  int|null  $page  Número da página desejada. Se não informado, não aplica paginação.
+     * @param  int|null  $perPage  Quantidade de registros por página. Se não informado, retorna todos os registros.
+     * 
+     * @return array{data: Collection<int, array{name: string, meta: array<string, mixed>, ibge_code: int}>, provider: string}|null
      *
      * @throws UfNotFoundException Quando a UF não é encontrada no provedor.
      * @throws ProviderTemporarilyUnavailableException Quando o provedor está temporariamente indisponível.
      */
-    public function index(string $uf): ?array
+    public function index(string $uf, ?int $page = null, ?int $perPage = null): ?array
     {
         $cacheKey = sprintf('municipalities_%s_%s', get_class($this->provider), strtoupper($uf));
 
         try {
             /** @var Collection<int, array{name: string, ibge_code: int}> $data */
-            $data = Cache::remember($cacheKey, now()->addHours(6), function () use ($uf): Collection {
+            $data = Cache::remember($cacheKey, now()->addMinutes(30), function () use ($uf): Collection {
                 return $this->provider->indexMunicipalities($uf);
             });
 
+            if (empty($page) || empty($perPage)) {
+                return [
+                    'data' => $data,
+                    'meta' => [
+                        'total' => $data->count(),
+                        'paginated' => false,
+                    ],
+                    'provider' => $this->providerClassBaseName,
+                ];
+            }
+
+            $page = max($page, 1);
+            $perPage = max($perPage, 1);
+
+            $paginated = $data->forPage($page, $perPage)->values();
+
             return [
-                'data' => $data,
+                'data' => $paginated,
+                'meta' => [
+                    'total' => $data->count(),
+                    'per_page' => $perPage,
+                    'current_page' => $page,
+                    'last_page' => (int) ceil($data->count() / $perPage),
+                    'paginated' => true,
+                ],
                 'provider' => $this->providerClassBaseName,
             ];
         } catch (UfNotFoundException $e) {
