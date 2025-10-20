@@ -24,6 +24,9 @@ jobs:
       - name: Build and Start containers
         run: docker compose up -d --build
 
+      - name: Install Composer dependencies
+        run: docker compose exec app composer install --no-interaction --prefer-dist
+
       - name: Copy .env
         run: docker compose exec app cp .env.example .env
 
