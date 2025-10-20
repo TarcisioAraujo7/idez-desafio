@@ -73,4 +73,42 @@ class MunicipalityTest extends TestCase
 
         $response->assertJson(['message' => "O provedor 'BrasilApiProvider' não está disponível no momento, tente novamente mais tarde."]);
     }
+
+    public function test_municipalities_can_be_paginated_by_uf(): void
+    {
+        $municipalitiesArray = [
+            ['id' => 280001, 'nome' => 'Aracaju'],
+            ['id' => 2806008, 'nome' => 'Ribeirópolis'],
+            ['id' => 2806701, 'nome' => 'São Cristóvão'],
+        ];
+
+        Http::fake([
+            'https://servicodados.ibge.gov.br/*' => Http::response($municipalitiesArray, 200),
+        ]);
+
+        $expectedResponse = [
+            'data' => [['name' => 'São Cristóvão', 'ibge_code' => 2806701]],
+            'meta' => [
+                'total' => 3,
+                'per_page' => 2,
+                'current_page' => 2,
+                'last_page' => 2,
+                'paginated' => true,
+            ],
+            'provider' => 'IbgeProvider',
+        ];
+
+        $response = $this->call(
+            method: 'GET',
+            uri: route('municipalities.index', [
+                'uf' => 'SE',
+                'page' => 2,
+                'per_page' => 2,
+            ])
+        );
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $response->assertJson($expectedResponse);
+    }
 }
