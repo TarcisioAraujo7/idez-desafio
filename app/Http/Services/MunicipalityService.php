@@ -62,7 +62,7 @@ class MunicipalityService
                 return $this->provider->indexMunicipalities($uf);
             });
 
-            if (empty($page) || empty($perPage)) {
+            if (($page === null || $perPage === null)) {
                 return [
                     'data' => $data,
                     'meta' => [
