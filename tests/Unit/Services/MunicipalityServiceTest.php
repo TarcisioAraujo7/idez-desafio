@@ -23,6 +23,10 @@ class MunicipalityServiceTest extends TestCase
 
         $expectedResponse = [
             'data' => $municipalitiesCollection,
+            'meta' => [
+                'total' => $municipalitiesCollection->count(),
+                'paginated' => false
+            ],
             'provider' => 'IbgeProvider',
         ];
 
@@ -50,6 +54,10 @@ class MunicipalityServiceTest extends TestCase
 
         $expectedResponse = [
             'data' => $municipalitiesCollection,
+            'meta' => [
+                'total' => $municipalitiesCollection->count(),
+                'paginated' => false
+            ],
             'provider' => get_class($mockProvider),
         ];
         $cacheKey = sprintf('municipalities_%s_SE', get_class($mockProvider));
