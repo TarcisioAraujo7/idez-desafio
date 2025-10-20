@@ -7,9 +7,9 @@ services:
     container_name: laravel-app
     restart: unless-stopped
     working_dir: /var/www
+    user: "1001:1001"
     volumes:
       - .:/var/www
-      - ./storage:/var/www/storage
     networks:
       - laravel
 
