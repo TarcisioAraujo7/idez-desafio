@@ -10,8 +10,6 @@ WORKDIR /var/www
 
 COPY . .
 
-USER www-data
-
 RUN composer install --optimize-autoloader
 
 RUN chown -R www-data:www-data /var/www \
