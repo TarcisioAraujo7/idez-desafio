@@ -18,8 +18,8 @@ Siga os passos abaixo para iniciar o projeto:
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/TarcisioAraujo7/idez-desafio
-cd idez-desafio
+git clone https://github.com/TarcisioAraujo7/api-municipios
+cd api-municipios
 ```
 
 2. Copie o arquivo de ambiente:
